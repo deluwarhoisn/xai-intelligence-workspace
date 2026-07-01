@@ -12,10 +12,14 @@ import {
   CheckCircle2,
   Database,
   LineChart,
+  LayoutDashboard,
+  Table2,
   Radar,
   ShieldCheck,
   Sparkles,
   Workflow,
+  GitBranch,
+  ListChecks,
 } from "lucide-react";
 
 type StageKey = "ingest" | "reason" | "act";
@@ -37,16 +41,38 @@ type Metric = {
   detail: string;
 };
 
-type DashboardBar = {
-  label: string;
-  value: number;
-  accent: string;
-};
-
 type AutomationCard = {
   title: string;
   description: string;
   status: string;
+};
+
+type WorkspaceKey = "overview" | "pipeline" | "automation";
+
+type WorkspaceStat = {
+  label: string;
+  value: string;
+  delta: string;
+};
+
+type WorkspaceRow = {
+  subject: string;
+  owner: string;
+  confidence: string;
+  status: string;
+  nextStep: string;
+};
+
+type WorkspaceView = {
+  key: WorkspaceKey;
+  navLabel: string;
+  title: string;
+  description: string;
+  accent: string;
+  stats: WorkspaceStat[];
+  bars: { label: string; value: number }[];
+  rows: WorkspaceRow[];
+  activity: string[];
 };
 
 const stages: Stage[] = [
@@ -91,13 +117,6 @@ const metrics: Metric[] = [
   { label: "Time to decision", value: "14 min", detail: "from event spike to action plan" },
 ];
 
-const dashboardBars: DashboardBar[] = [
-  { label: "Trust", value: 88, accent: "from-cyan-300/90 to-sky-500/50" },
-  { label: "Momentum", value: 72, accent: "from-emerald-300/85 to-teal-500/45" },
-  { label: "Risk", value: 41, accent: "from-amber-300/90 to-orange-500/40" },
-  { label: "Adoption", value: 79, accent: "from-violet-300/85 to-fuchsia-500/45" },
-];
-
 const automationCards: AutomationCard[] = [
   {
     title: "Escalation routing",
@@ -113,6 +132,147 @@ const automationCards: AutomationCard[] = [
     title: "Policy checks",
     description: "Block low-confidence actions until the audit trail is complete.",
     status: "Guarded",
+  },
+];
+
+const workspaceViews: WorkspaceView[] = [
+  {
+    key: "overview",
+    navLabel: "Command center",
+    title: "Overview",
+    description: "A calm summary of the entire intelligence workspace, from live intake to pending actions.",
+    accent: "from-cyan-300/25 via-sky-400/12 to-transparent",
+    stats: [
+      { label: "Open insights", value: "24", delta: "+5 this week" },
+      { label: "Automations", value: "08", delta: "3 awaiting approval" },
+      { label: "Avg. confidence", value: "91%", delta: "up 4 points" },
+    ],
+    bars: [
+      { label: "Signal", value: 86 },
+      { label: "Coverage", value: 74 },
+      { label: "Actionability", value: 92 },
+      { label: "Auditability", value: 81 },
+    ],
+    rows: [
+      {
+        subject: "Revenue drift in enterprise segment",
+        owner: "A. Chen",
+        confidence: "0.94",
+        status: "Ready",
+        nextStep: "Send to rev-ops",
+      },
+      {
+        subject: "Support backlog increase",
+        owner: "M. Patel",
+        confidence: "0.89",
+        status: "Watching",
+        nextStep: "Escalate if trend holds",
+      },
+      {
+        subject: "Trial conversion decline",
+        owner: "J. Rivera",
+        confidence: "0.86",
+        status: "Queued",
+        nextStep: "Draft customer brief",
+      },
+    ],
+    activity: [
+      "2 min ago · Insight compiled from 118 sources",
+      "11 min ago · Policy review completed automatically",
+      "18 min ago · Owner routing synchronized",
+    ],
+  },
+  {
+    key: "pipeline",
+    navLabel: "Signal pipeline",
+    title: "Pipeline health",
+    description: "Freshness, coverage, and confidence across the ingest and reasoning layers.",
+    accent: "from-emerald-300/25 via-teal-400/12 to-transparent",
+    stats: [
+      { label: "Fresh sources", value: "118", delta: "96% synced" },
+      { label: "Model latency", value: "1.4s", delta: "-0.2s faster" },
+      { label: "Drift alerts", value: "03", delta: "all acknowledged" },
+    ],
+    bars: [
+      { label: "Freshness", value: 94 },
+      { label: "Coverage", value: 78 },
+      { label: "Latency", value: 61 },
+      { label: "Confidence", value: 89 },
+    ],
+    rows: [
+      {
+        subject: "CRM sync delay",
+        owner: "Data platform",
+        confidence: "0.97",
+        status: "Resolved",
+        nextStep: "No action required",
+      },
+      {
+        subject: "Schema mismatch in event stream",
+        owner: "Analytics",
+        confidence: "0.91",
+        status: "Open",
+        nextStep: "Validate mapping",
+      },
+      {
+        subject: "Duplicate support tickets",
+        owner: "Ops",
+        confidence: "0.88",
+        status: "Queued",
+        nextStep: "Cluster and dedupe",
+      },
+    ],
+    activity: [
+      "1 min ago · Ingest batch completed",
+      "7 min ago · Confidence recalibrated",
+      "15 min ago · Drift model checkpointed",
+    ],
+  },
+  {
+    key: "automation",
+    navLabel: "Automation queue",
+    title: "Action queue",
+    description: "Approved next steps and machine-routed actions, organized for leadership review.",
+    accent: "from-violet-300/25 via-fuchsia-400/12 to-transparent",
+    stats: [
+      { label: "Pending actions", value: "12", delta: "5 require review" },
+      { label: "Auto-routed", value: "76%", delta: "up 9 points" },
+      { label: "Policy holds", value: "02", delta: "both low risk" },
+    ],
+    bars: [
+      { label: "Queued", value: 67 },
+      { label: "Approved", value: 83 },
+      { label: "Blocked", value: 29 },
+      { label: "Completed", value: 91 },
+    ],
+    rows: [
+      {
+        subject: "Owner notification",
+        owner: "System",
+        confidence: "1.00",
+        status: "Live",
+        nextStep: "Already dispatched",
+      },
+      {
+        subject: "Board summary draft",
+        owner: "Exec ops",
+        confidence: "0.95",
+        status: "Review",
+        nextStep: "Approve before send",
+      },
+      {
+        subject: "Escalation path update",
+        owner: "Revenue",
+        confidence: "0.92",
+        status: "Ready",
+        nextStep: "Trigger workflow",
+      },
+    ],
+    activity: [
+      "30 sec ago · Escalation queued",
+      "4 min ago · Brief generated",
+      "9 min ago · Policy gate passed",
+    ],
   },
 ];
 
@@ -227,7 +387,13 @@ function StageVisual({ stage }: { stage: Stage }) {
   );
 }
 
-function DashboardPreview() {
+function WorkspaceSurface() {
+  const [workspaceKey, setWorkspaceKey] = useState<WorkspaceKey>("overview");
+  const activeWorkspace = useMemo(
+    () => workspaceViews.find((view) => view.key === workspaceKey) ?? workspaceViews[0],
+    [workspaceKey],
+  );
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 24 }}
@@ -264,170 +430,286 @@ function DashboardPreview() {
         </div>
       </div>
 
-      <div className="relative mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
-          <div className="flex items-center justify-between gap-4">
+      <div className="relative mt-8 grid gap-6 xl:grid-cols-[270px_minmax(0,1fr)]">
+        <aside className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+          <div className="space-y-4">
             <div>
-              <p className="text-sm font-medium text-white">Insight health</p>
+              <p className="text-sm font-medium text-white">Workspace navigation</p>
               <p className="mt-1 text-xs tracking-[0.22em] text-white/42 uppercase">
-                Board-ready snapshot
+                Interactive product shell
               </p>
             </div>
-            <div className="flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
-              <Sparkles className="h-3.5 w-3.5" />
-              Live intelligence
+            <div className="space-y-2">
+              {workspaceViews.map((view, index) => {
+                const selected = view.key === workspaceKey;
+                const Icon = [LayoutDashboard, GitBranch, ListChecks][index];
+
+                return (
+                  <motion.button
+                    key={view.key}
+                    whileHover={{ x: 3 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setWorkspaceKey(view.key)}
+                    className={clsx(
+                      "flex w-full items-center gap-3 rounded-[20px] border px-4 py-4 text-left transition-colors",
+                      selected
+                        ? "border-cyan-300/35 bg-cyan-300/12"
+                        : "border-white/8 bg-white/5 hover:bg-white/8",
+                    )}
+                  >
+                    <span
+                      className={clsx(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl",
+                        selected ? "bg-cyan-300 text-slate-950" : "bg-white/10 text-white/70",
+                      )}
+                    >
+                      <Icon className="h-4.5 w-4.5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-medium text-white">{view.navLabel}</span>
+                      <span className="mt-1 block text-xs leading-5 text-white/54">{view.description}</span>
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            <div className="rounded-[24px] border border-white/10 bg-white/5 p-4">
+              <p className="text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase">Today</p>
+              <div className="mt-3 space-y-3 text-sm text-white/68">
+                <div className="flex items-center justify-between gap-4">
+                  <span>Fresh data sync</span>
+                  <span className="text-white">32s ago</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span>Model refresh</span>
+                  <span className="text-white">1m ago</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span>Pending approvals</span>
+                  <span className="text-white">03</span>
+                </div>
+              </div>
             </div>
           </div>
+        </aside>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,18,38,0.95),rgba(5,10,22,0.96))] p-5">
-              <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:32px_32px]" />
-              <div className="relative flex items-end justify-between gap-3">
-                {dashboardBars.map((bar, index) => (
+        <div className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeWorkspace.key}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <p className="text-sm font-medium text-white">{activeWorkspace.title}</p>
+                  <p className="mt-1 max-w-2xl text-sm leading-6 text-white/62">{activeWorkspace.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {workspaceViews.map((view) => (
+                    <button
+                      key={view.key}
+                      onClick={() => setWorkspaceKey(view.key)}
+                      className={clsx(
+                        "rounded-full border px-4 py-2 text-xs font-medium tracking-[0.18em] uppercase transition-colors",
+                        view.key === workspaceKey
+                          ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
+                          : "border-white/10 bg-white/5 text-white/60 hover:bg-white/8",
+                      )}
+                    >
+                      {view.navLabel}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-3">
+                {activeWorkspace.stats.map((stat, index) => (
                   <motion.div
-                    key={bar.label}
-                    initial={{ scaleY: 0.35, opacity: 0 }}
-                    whileInView={{ scaleY: 1, opacity: 1 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.45, delay: index * 0.08 }}
-                    className="group flex min-h-[240px] flex-1 flex-col justify-end gap-3 rounded-[22px] border border-white/8 bg-white/4 px-4 py-4"
-                    style={{ transformOrigin: "bottom" }}
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: 0.05 * index }}
+                    className="rounded-[24px] border border-white/10 bg-white/5 p-4"
                   >
-                    <div className="flex items-end justify-between gap-2">
-                      <div>
-                        <p className="text-[11px] tracking-[0.2em] text-white/42 uppercase">{bar.label}</p>
-                        <p className="mt-2 text-2xl font-semibold text-white">{bar.value}%</p>
-                      </div>
-                      <div className={clsx("h-12 w-2 rounded-full bg-gradient-to-t", bar.accent)} />
-                    </div>
-                    <div className="relative mt-auto h-36 overflow-hidden rounded-[20px] border border-white/8 bg-black/18 p-2">
-                      <div className="absolute inset-x-4 top-4 h-px bg-white/10" />
-                      <div className="absolute inset-x-4 top-1/2 h-px bg-white/10" />
-                      <div className="absolute inset-x-4 bottom-4 h-px bg-white/10" />
-                      <motion.div
-                        initial={{ height: "18%" }}
-                        whileInView={{ height: `${bar.value}%` }}
-                        viewport={{ once: true, amount: 0.4 }}
-                        transition={{ duration: 0.75, delay: index * 0.08, ease: "easeOut" }}
-                        className={clsx(
-                          "absolute bottom-2 left-2 right-2 rounded-[16px] bg-gradient-to-t shadow-[0_0_48px_rgba(56,189,248,0.18)]",
-                          bar.accent,
-                        )}
-                      />
-                    </div>
+                    <p className="text-[11px] font-medium tracking-[0.2em] text-white/42 uppercase">
+                      {stat.label}
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{stat.value}</p>
+                    <p className="mt-1 text-sm leading-6 text-white/58">{stat.delta}</p>
                   </motion.div>
                 ))}
               </div>
-            </div>
 
-            <div className="grid gap-4">
-              <div className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-medium text-white">Insight trace</p>
-                    <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
-                      From anomaly to action
-                    </p>
+              <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
+                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,18,38,0.95),rgba(5,10,22,0.96))] p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-white">Performance chart</p>
+                      <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                        Static data, animated reveal
+                      </p>
+                    </div>
+                    <div className={clsx("h-8 w-8 rounded-full bg-gradient-to-br", activeWorkspace.accent)} />
                   </div>
-                  <LineChart className="h-5 w-5 text-cyan-200" />
-                </div>
-                <div className="mt-5 space-y-4">
-                  {[
-                    { label: "Detected variance", value: "Revenue dip in Region West" },
-                    { label: "Confidence", value: "0.91 with evidence trail" },
-                    { label: "Suggested move", value: "Notify owner and draft brief" },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, x: 16 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, amount: 0.4 }}
-                      transition={{ duration: 0.35, delay: index * 0.08 }}
-                      className="rounded-[20px] border border-white/8 bg-black/18 p-4"
-                    >
-                      <p className="text-[11px] tracking-[0.18em] text-white/42 uppercase">{item.label}</p>
-                      <p className="mt-2 text-sm leading-6 text-white/80">{item.value}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-                <p className="text-sm font-medium text-white">Automation readiness</p>
-                <div className="mt-4 space-y-3">
-                  {automationCards.map((card, index) => (
-                    <motion.div
-                      key={card.title}
-                      initial={{ opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.35 }}
-                      transition={{ duration: 0.35, delay: 0.05 * index }}
-                      whileHover={{ y: -2, scale: 1.01 }}
-                      className="group rounded-[20px] border border-white/8 bg-black/18 p-4 transition-colors hover:border-cyan-300/25"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="font-medium text-white">{card.title}</p>
-                        <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] tracking-[0.18em] text-white/55 uppercase">
-                          {card.status}
-                        </span>
+                  <div className="mt-5 grid grid-cols-4 gap-3 items-end">
+                    {activeWorkspace.bars.map((bar, index) => (
+                      <div key={bar.label} className="flex flex-col items-center gap-3">
+                        <div className="flex h-48 w-full items-end rounded-[24px] border border-white/8 bg-white/4 p-2">
+                          <motion.div
+                            initial={{ height: "22%" }}
+                            animate={{ height: `${bar.value}%` }}
+                            transition={{ duration: 0.55, delay: 0.08 * index, ease: "easeOut" }}
+                            className={clsx(
+                              "w-full rounded-[18px] bg-gradient-to-t shadow-[0_0_42px_rgba(56,189,248,0.18)]",
+                              index === 0 && "from-cyan-300/90 to-sky-500/45",
+                              index === 1 && "from-emerald-300/90 to-teal-500/45",
+                              index === 2 && "from-amber-300/90 to-orange-500/45",
+                              index === 3 && "from-violet-300/90 to-fuchsia-500/45",
+                            )}
+                          />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[11px] tracking-[0.18em] text-white/45 uppercase">{bar.label}</p>
+                          <p className="mt-1 text-sm font-medium text-white">{bar.value}%</p>
+                        </div>
                       </div>
-                      <p className="mt-2 text-sm leading-6 text-white/60">{card.description}</p>
-                    </motion.div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-5">
+                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-white">Insight queue</p>
+                        <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                          Actionable records
+                        </p>
+                      </div>
+                      <Table2 className="h-5 w-5 text-cyan-200" />
+                    </div>
+                    <div className="mt-5 overflow-hidden rounded-[22px] border border-white/10 bg-black/16">
+                      <table className="w-full text-left text-sm">
+                        <thead className="border-b border-white/8 bg-white/5 text-[11px] tracking-[0.2em] text-white/42 uppercase">
+                          <tr>
+                            <th className="px-4 py-3 font-medium">Subject</th>
+                            <th className="px-4 py-3 font-medium">Owner</th>
+                            <th className="px-4 py-3 font-medium">Confidence</th>
+                            <th className="px-4 py-3 font-medium">State</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {activeWorkspace.rows.map((row, index) => (
+                            <motion.tr
+                              key={row.subject}
+                              initial={{ opacity: 0, x: 10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.25, delay: 0.04 * index }}
+                              className="border-b border-white/6 last:border-b-0 transition-colors hover:bg-white/5"
+                            >
+                              <td className="px-4 py-4 text-white/86">{row.subject}</td>
+                              <td className="px-4 py-4 text-white/66">{row.owner}</td>
+                              <td className="px-4 py-4 text-white/66">{row.confidence}</td>
+                              <td className="px-4 py-4">
+                                <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] tracking-[0.14em] text-white/66 uppercase">
+                                  {row.status}
+                                </span>
+                              </td>
+                            </motion.tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-white">Activity log</p>
+                        <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                          Subtle state transitions
+                        </p>
+                      </div>
+                      <Sparkles className="h-5 w-5 text-emerald-200" />
+                    </div>
+                    <div className="mt-5 space-y-3">
+                      {activeWorkspace.activity.map((item, index) => (
+                        <motion.div
+                          key={item}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2, delay: 0.03 * index }}
+                          className="flex items-center gap-3 rounded-[20px] border border-white/8 bg-black/14 px-4 py-3 text-sm text-white/72"
+                        >
+                          <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(125,211,252,0.55)]" />
+                          {item}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="grid gap-4 rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium text-white">Decision timeline</p>
-              <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
-                AI automations in motion
-              </p>
-            </div>
-            <Workflow className="h-5 w-5 text-emerald-200" />
-          </div>
-
-          <div className="space-y-4">
-            {[
-              "Monitor the live source stream",
-              "Cluster related anomalies into a single insight",
-              "Generate a concise brief with evidence attached",
-              "Trigger downstream automation and owner routing",
-            ].map((step, index) => (
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: 14 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.3, delay: 0.06 * index }}
-                className="flex gap-3 rounded-[22px] border border-white/8 bg-white/5 p-4"
-              >
-                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/10 text-xs font-semibold text-cyan-100">
-                  0{index + 1}
+              <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+                <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-medium text-white">Automation readiness</p>
+                      <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                        Hover for feedback
+                      </p>
+                    </div>
+                    <Workflow className="h-5 w-5 text-emerald-200" />
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {automationCards.map((card, index) => (
+                      <motion.div
+                        key={card.title}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, delay: 0.04 * index }}
+                        whileHover={{ y: -2, scale: 1.01 }}
+                        className="rounded-[20px] border border-white/8 bg-black/18 p-4 transition-colors hover:border-cyan-300/25"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="font-medium text-white">{card.title}</p>
+                          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] tracking-[0.18em] text-white/55 uppercase">
+                            {card.status}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-6 text-white/60">{card.description}</p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm leading-6 text-white/82">{step}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
 
-          <div className="rounded-[24px] border border-emerald-300/15 bg-emerald-300/8 p-5">
-            <p className="text-[11px] font-medium tracking-[0.2em] text-emerald-100 uppercase">
-              Automation outcome
-            </p>
-            <p className="mt-2 text-xl font-semibold text-white">
-              Insight dispatched, owner notified, and brief queued for review.
-            </p>
-            <p className="mt-2 text-sm leading-6 text-white/60">
-              The dashboard preview closes the story by showing how the intelligence layer becomes
-              a concrete, accountable action surface.
-            </p>
-          </div>
+                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,24,44,0.9),rgba(5,9,20,0.95))] p-5">
+                  <p className="text-sm font-medium text-white">Insight summary</p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    {[
+                      { label: "Confidence", value: "0.94" },
+                      { label: "Next action", value: "Escalate" },
+                      { label: "Owner", value: "Revenue Ops" },
+                    ].map((item) => (
+                      <div key={item.label} className="rounded-[22px] border border-white/8 bg-white/5 p-4">
+                        <p className="text-[11px] tracking-[0.2em] text-white/42 uppercase">{item.label}</p>
+                        <p className="mt-2 text-lg font-semibold text-white">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 rounded-[24px] border border-white/10 bg-black/18 p-4 text-sm leading-6 text-white/68">
+                    The active workspace state should feel like a real application surface: stable layout,
+                    visible hierarchy, and enough motion to make the data feel responsive without becoming loud.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </motion.section>
@@ -664,7 +946,7 @@ export default function Home() {
           </aside>
         </section>
 
-        <DashboardPreview />
+        <WorkspaceSurface />
       </div>
     </main>
   );
