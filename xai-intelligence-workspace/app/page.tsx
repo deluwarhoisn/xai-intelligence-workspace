@@ -37,6 +37,18 @@ type Metric = {
   detail: string;
 };
 
+type DashboardBar = {
+  label: string;
+  value: number;
+  accent: string;
+};
+
+type AutomationCard = {
+  title: string;
+  description: string;
+  status: string;
+};
+
 const stages: Stage[] = [
   {
     key: "ingest",
@@ -77,6 +89,31 @@ const metrics: Metric[] = [
   { label: "Live sources", value: "118", detail: "across product, ops, and finance" },
   { label: "Signal confidence", value: "92%", detail: "weighted by recency and relevance" },
   { label: "Time to decision", value: "14 min", detail: "from event spike to action plan" },
+];
+
+const dashboardBars: DashboardBar[] = [
+  { label: "Trust", value: 88, accent: "from-cyan-300/90 to-sky-500/50" },
+  { label: "Momentum", value: 72, accent: "from-emerald-300/85 to-teal-500/45" },
+  { label: "Risk", value: 41, accent: "from-amber-300/90 to-orange-500/40" },
+  { label: "Adoption", value: 79, accent: "from-violet-300/85 to-fuchsia-500/45" },
+];
+
+const automationCards: AutomationCard[] = [
+  {
+    title: "Escalation routing",
+    description: "Route high-confidence anomalies to the right operator with evidence attached.",
+    status: "Auto",
+  },
+  {
+    title: "Brief generation",
+    description: "Convert clustered findings into an executive summary in one step.",
+    status: "Live",
+  },
+  {
+    title: "Policy checks",
+    description: "Block low-confidence actions until the audit trail is complete.",
+    status: "Guarded",
+  },
 ];
 
 function SignalCore() {
@@ -187,6 +224,213 @@ function StageVisual({ stage }: { stage: Stage }) {
         </div>
       </div>
     </motion.div>
+  );
+}
+
+function DashboardPreview() {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[linear-gradient(180deg,rgba(7,12,26,0.95),rgba(4,8,18,0.92))] p-6 shadow-[0_40px_120px_rgba(1,6,20,0.34)] sm:p-8"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(99,102,241,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.1),transparent_26%)]" />
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-2xl space-y-3">
+          <p className="text-[11px] font-medium tracking-[0.28em] text-cyan-100 uppercase">
+            03 / Intelligence Dashboard Preview
+          </p>
+          <h2 className="text-3xl font-semibold text-white sm:text-4xl">
+            A decision surface that turns the model output into a clear operational picture.
+          </h2>
+          <p className="max-w-2xl text-sm leading-6 text-white/66 sm:text-base">
+            The preview mixes signal health, automation readiness, and a live insight trace so
+            decision-makers can scan, trust, and act in one place.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 gap-3 text-xs font-medium text-white/68 sm:min-w-[360px]">
+          {[
+            { label: "Signals", value: "24" },
+            { label: "Automations", value: "08" },
+            { label: "Latency", value: "1.4s" },
+          ].map((item) => (
+            <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
+              <p className="text-[11px] tracking-[0.18em] text-white/42 uppercase">{item.label}</p>
+              <p className="mt-2 text-lg font-semibold text-white">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-white">Insight health</p>
+              <p className="mt-1 text-xs tracking-[0.22em] text-white/42 uppercase">
+                Board-ready snapshot
+              </p>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+              <Sparkles className="h-3.5 w-3.5" />
+              Live intelligence
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
+            <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,18,38,0.95),rgba(5,10,22,0.96))] p-5">
+              <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:32px_32px]" />
+              <div className="relative flex items-end justify-between gap-3">
+                {dashboardBars.map((bar, index) => (
+                  <motion.div
+                    key={bar.label}
+                    initial={{ scaleY: 0.35, opacity: 0 }}
+                    whileInView={{ scaleY: 1, opacity: 1 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                    className="group flex min-h-[240px] flex-1 flex-col justify-end gap-3 rounded-[22px] border border-white/8 bg-white/4 px-4 py-4"
+                    style={{ transformOrigin: "bottom" }}
+                  >
+                    <div className="flex items-end justify-between gap-2">
+                      <div>
+                        <p className="text-[11px] tracking-[0.2em] text-white/42 uppercase">{bar.label}</p>
+                        <p className="mt-2 text-2xl font-semibold text-white">{bar.value}%</p>
+                      </div>
+                      <div className={clsx("h-12 w-2 rounded-full bg-gradient-to-t", bar.accent)} />
+                    </div>
+                    <div className="relative mt-auto h-36 overflow-hidden rounded-[20px] border border-white/8 bg-black/18 p-2">
+                      <div className="absolute inset-x-4 top-4 h-px bg-white/10" />
+                      <div className="absolute inset-x-4 top-1/2 h-px bg-white/10" />
+                      <div className="absolute inset-x-4 bottom-4 h-px bg-white/10" />
+                      <motion.div
+                        initial={{ height: "18%" }}
+                        whileInView={{ height: `${bar.value}%` }}
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{ duration: 0.75, delay: index * 0.08, ease: "easeOut" }}
+                        className={clsx(
+                          "absolute bottom-2 left-2 right-2 rounded-[16px] bg-gradient-to-t shadow-[0_0_48px_rgba(56,189,248,0.18)]",
+                          bar.accent,
+                        )}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <div className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-medium text-white">Insight trace</p>
+                    <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                      From anomaly to action
+                    </p>
+                  </div>
+                  <LineChart className="h-5 w-5 text-cyan-200" />
+                </div>
+                <div className="mt-5 space-y-4">
+                  {[
+                    { label: "Detected variance", value: "Revenue dip in Region West" },
+                    { label: "Confidence", value: "0.91 with evidence trail" },
+                    { label: "Suggested move", value: "Notify owner and draft brief" },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, x: 16 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{ duration: 0.35, delay: index * 0.08 }}
+                      className="rounded-[20px] border border-white/8 bg-black/18 p-4"
+                    >
+                      <p className="text-[11px] tracking-[0.18em] text-white/42 uppercase">{item.label}</p>
+                      <p className="mt-2 text-sm leading-6 text-white/80">{item.value}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                <p className="text-sm font-medium text-white">Automation readiness</p>
+                <div className="mt-4 space-y-3">
+                  {automationCards.map((card, index) => (
+                    <motion.div
+                      key={card.title}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.35 }}
+                      transition={{ duration: 0.35, delay: 0.05 * index }}
+                      whileHover={{ y: -2, scale: 1.01 }}
+                      className="group rounded-[20px] border border-white/8 bg-black/18 p-4 transition-colors hover:border-cyan-300/25"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-medium text-white">{card.title}</p>
+                        <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] tracking-[0.18em] text-white/55 uppercase">
+                          {card.status}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-white/60">{card.description}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-4 rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-white">Decision timeline</p>
+              <p className="mt-1 text-xs tracking-[0.2em] text-white/42 uppercase">
+                AI automations in motion
+              </p>
+            </div>
+            <Workflow className="h-5 w-5 text-emerald-200" />
+          </div>
+
+          <div className="space-y-4">
+            {[
+              "Monitor the live source stream",
+              "Cluster related anomalies into a single insight",
+              "Generate a concise brief with evidence attached",
+              "Trigger downstream automation and owner routing",
+            ].map((step, index) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: 14 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.3, delay: 0.06 * index }}
+                className="flex gap-3 rounded-[22px] border border-white/8 bg-white/5 p-4"
+              >
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/10 text-xs font-semibold text-cyan-100">
+                  0{index + 1}
+                </div>
+                <div>
+                  <p className="text-sm leading-6 text-white/82">{step}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="rounded-[24px] border border-emerald-300/15 bg-emerald-300/8 p-5">
+            <p className="text-[11px] font-medium tracking-[0.2em] text-emerald-100 uppercase">
+              Automation outcome
+            </p>
+            <p className="mt-2 text-xl font-semibold text-white">
+              Insight dispatched, owner notified, and brief queued for review.
+            </p>
+            <p className="mt-2 text-sm leading-6 text-white/60">
+              The dashboard preview closes the story by showing how the intelligence layer becomes
+              a concrete, accountable action surface.
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.section>
   );
 }
 
@@ -419,6 +663,8 @@ export default function Home() {
             </section>
           </aside>
         </section>
+
+        <DashboardPreview />
       </div>
     </main>
   );
