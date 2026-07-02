@@ -430,8 +430,8 @@ function WorkspaceSurface() {
         </div>
       </div>
 
-      <div className="relative mt-8 grid gap-6 xl:grid-cols-[270px_minmax(0,1fr)]">
-        <aside className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+      <div className="relative mt-8 grid gap-6 lg:grid-cols-[270px_minmax(0,1fr)]">
+        <aside className="rounded-[30px] border border-white/10 bg-black/18 p-4 backdrop-blur-xl sm:p-5 lg:p-6">
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium text-white">Workspace navigation</p>
@@ -494,7 +494,7 @@ function WorkspaceSurface() {
           </div>
         </aside>
 
-        <div className="rounded-[30px] border border-white/10 bg-black/18 p-5 backdrop-blur-xl sm:p-6">
+        <div className="rounded-[30px] border border-white/10 bg-black/18 p-4 backdrop-blur-xl sm:p-5 lg:p-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeWorkspace.key}
@@ -509,7 +509,7 @@ function WorkspaceSurface() {
                   <p className="text-sm font-medium text-white">{activeWorkspace.title}</p>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-white/62">{activeWorkspace.description}</p>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 lg:justify-end">
                   {workspaceViews.map((view) => (
                     <button
                       key={view.key}
@@ -527,7 +527,7 @@ function WorkspaceSurface() {
                 </div>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3">
                 {activeWorkspace.stats.map((stat, index) => (
                   <motion.div
                     key={stat.label}
@@ -545,8 +545,8 @@ function WorkspaceSurface() {
                 ))}
               </div>
 
-              <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
-                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,18,38,0.95),rgba(5,10,22,0.96))] p-5">
+              <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,18,38,0.95),rgba(5,10,22,0.96))] p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-medium text-white">Performance chart</p>
@@ -556,10 +556,10 @@ function WorkspaceSurface() {
                     </div>
                     <div className={clsx("h-8 w-8 rounded-full bg-gradient-to-br", activeWorkspace.accent)} />
                   </div>
-                  <div className="mt-5 grid grid-cols-4 gap-3 items-end">
+                  <div className="mt-5 grid grid-cols-2 items-end gap-3 sm:grid-cols-4">
                     {activeWorkspace.bars.map((bar, index) => (
                       <div key={bar.label} className="flex flex-col items-center gap-3">
-                        <div className="flex h-48 w-full items-end rounded-[24px] border border-white/8 bg-white/4 p-2">
+                        <div className="flex h-40 w-full items-end rounded-[24px] border border-white/8 bg-white/4 p-2 sm:h-48">
                           <motion.div
                             initial={{ height: "22%" }}
                             animate={{ height: `${bar.value}%` }}
@@ -583,7 +583,7 @@ function WorkspaceSurface() {
                 </div>
 
                 <div className="grid gap-5">
-                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5">
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="text-sm font-medium text-white">Insight queue</p>
@@ -593,8 +593,8 @@ function WorkspaceSurface() {
                       </div>
                       <Table2 className="h-5 w-5 text-cyan-200" />
                     </div>
-                    <div className="mt-5 overflow-hidden rounded-[22px] border border-white/10 bg-black/16">
-                      <table className="w-full text-left text-sm">
+                    <div className="mt-5 overflow-x-auto rounded-[22px] border border-white/10 bg-black/16">
+                      <table className="min-w-[640px] w-full text-left text-sm">
                         <thead className="border-b border-white/8 bg-white/5 text-[11px] tracking-[0.2em] text-white/42 uppercase">
                           <tr>
                             <th className="px-4 py-3 font-medium">Subject</th>
@@ -627,7 +627,7 @@ function WorkspaceSurface() {
                     </div>
                   </div>
 
-                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5">
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="text-sm font-medium text-white">Activity log</p>
@@ -655,8 +655,8 @@ function WorkspaceSurface() {
                 </div>
               </div>
 
-              <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
-                <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+              <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+                <div className="rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-medium text-white">Automation readiness</p>
@@ -688,7 +688,7 @@ function WorkspaceSurface() {
                   </div>
                 </div>
 
-                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,24,44,0.9),rgba(5,9,20,0.95))] p-5">
+                <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,24,44,0.9),rgba(5,9,20,0.95))] p-4 sm:p-5">
                   <p className="text-sm font-medium text-white">Insight summary</p>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3">
                     {[
@@ -725,7 +725,7 @@ export default function Home() {
   );
 
   return (
-    <main className="relative min-h-screen overflow-hidden px-4 py-5 text-white sm:px-6 lg:px-8">
+    <main className="relative min-h-screen overflow-hidden px-3 py-3 text-white sm:px-5 sm:py-5 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         <header className="flex flex-col gap-4 rounded-[28px] border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -741,11 +741,11 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="grid gap-6 xl:grid-cols-[1.18fr_0.82fr]">
-          <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[linear-gradient(180deg,rgba(7,12,26,0.95),rgba(4,8,18,0.88))] px-6 py-8 shadow-[0_40px_120px_rgba(1,6,20,0.4)] sm:px-8 lg:px-10 lg:py-10">
+        <section className="grid gap-6 lg:grid-cols-[1.18fr_0.82fr]">
+          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(7,12,26,0.95),rgba(4,8,18,0.88))] px-4 py-6 shadow-[0_40px_120px_rgba(1,6,20,0.4)] sm:px-6 sm:py-8 lg:px-10 lg:py-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.2),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(99,102,241,0.22),transparent_22%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.14),transparent_30%)]" />
-            <div className="relative grid gap-10 xl:grid-cols-[1.02fr_0.98fr]">
-              <div className="space-y-8">
+            <div className="relative grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:gap-10">
+              <div className="space-y-6 sm:space-y-8">
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -765,7 +765,7 @@ export default function Home() {
                   <p className="max-w-xl text-sm font-medium tracking-[0.28em] text-cyan-100 uppercase">
                     Raw data in. Board-ready insight out.
                   </p>
-                  <h2 className="max-w-2xl text-4xl font-semibold leading-[1.02] text-balance text-white sm:text-5xl lg:text-6xl">
+                  <h2 className="max-w-2xl text-3xl font-semibold leading-[1.04] text-balance text-white sm:text-4xl lg:text-6xl">
                     Xai turns fragmented operational data into a decision layer executives can trust.
                   </h2>
                   <p className="max-w-2xl text-base leading-7 text-white/68 sm:text-lg">
@@ -793,19 +793,19 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                  <button className="inline-flex items-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-medium text-slate-950 transition-transform hover:-translate-y-0.5">
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <button className="inline-flex items-center justify-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-medium text-slate-950 transition-transform hover:-translate-y-0.5">
                     Explore the pipeline
                     <ArrowRight className="h-4 w-4" />
                   </button>
-                  <button className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/82 transition-colors hover:bg-white/10">
+                  <button className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/82 transition-colors hover:bg-white/10">
                     <Sparkles className="h-4 w-4 text-cyan-200" />
                     View signal trace
                   </button>
                 </div>
               </div>
 
-              <div className="relative min-h-[420px] rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(125,211,252,0.16),transparent_52%),linear-gradient(180deg,rgba(7,13,29,0.95),rgba(4,8,18,0.95))] p-4 sm:p-5">
+              <div className="relative min-h-[360px] rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(125,211,252,0.16),transparent_52%),linear-gradient(180deg,rgba(7,13,29,0.95),rgba(4,8,18,0.95))] p-3 sm:min-h-[420px] sm:p-5">
                 <div className="absolute inset-0 overflow-hidden rounded-[30px]">
                   <div className="absolute inset-x-8 top-10 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent" />
                   <div className="absolute inset-y-8 left-10 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
@@ -825,10 +825,10 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="grid flex-1 gap-4 md:grid-cols-[0.74fr_1.26fr]">
+                  <div className="grid flex-1 gap-4 lg:grid-cols-[0.74fr_1.26fr]">
                     <div className="rounded-[28px] border border-white/10 bg-white/4 p-4 backdrop-blur-sm">
                       <p className="text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase">Stages</p>
-                      <div className="mt-4 space-y-2">
+                      <div className="mt-4 space-y-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:space-y-0 lg:block lg:space-y-2">
                         {stages.map((stage) => {
                           const active = stage.key === activeStage;
 
